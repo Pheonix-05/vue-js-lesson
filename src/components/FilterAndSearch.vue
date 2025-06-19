@@ -5,6 +5,7 @@ const searchPerson = ref("")
 
 <template>
     <div class="bg">
+        
         <input 
             v-model.trim="searchPerson" 
             type="text"
