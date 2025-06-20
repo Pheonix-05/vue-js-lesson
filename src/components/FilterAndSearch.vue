@@ -5,17 +5,19 @@ const searchPerson = ref("")
 
 <template>
     <div class="bg">
-        <input 
-            v-model.trim="searchPerson" 
-            type="text"
-            placeholder="       Search a Name or Email..."
-            class="search"
-        >
-        <span v-if="!searchPerson" class="icon material-symbols-outlined">
-        search
-        </span>
-
+        <div>
+            <input 
+                v-model.trim="searchPerson" 
+                type="text"
+                placeholder="       Search a Name or Email..."
+                class="search"
+            >
+            <span class="icon searchIcon material-symbols-outlined">search</span>
+        </div>
         
+        <span class="icon sortIcon material-symbols-outlined">sort</span>
+        <span class="icon filterIcon material-symbols-outlined">filter_alt</span>
+        <span class="icon addIcon material-symbols-outlined">person_add</span>
     </div>
 </template>
 
@@ -36,11 +38,29 @@ const searchPerson = ref("")
     width: 200px;
 }
 .icon {
-    position: absolute;
-    top: 100px;
-    left: 5px;
     z-index: 1;
     margin: 0 0 0 5px;
+    position: absolute;
+}
+.searchIcon {
+    top: 100px;
+    left: 5px;
     color: gray;
+}
+.sortIcon {
+    top: 100px;
+    right: 60px;
+}
+.filterIcon{
+    top: 100px;
+    right: 35px;
+}
+.addIcon {
+    background: #E0E0E0;
+    border-radius: 4px;
+    border: 1px solid #474747;
+    top: 96px;
+    right: 5px;
+    padding: 2px;
 }
 </style>
