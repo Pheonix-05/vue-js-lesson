@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 const searchPerson = ref("")
 const sorting = ref(false)
+const filtering = ref(false)
 const catMode = ref(1)
 </script>
 
@@ -48,8 +49,33 @@ const catMode = ref(1)
         </div>
 
         <!-- filter pop-up menu -->
-        <div>
+        <div
+            @mouseenter="filtering = true" 
+            @mouseleave="filtering = false"
+        >
             <span class="icon filterIcon material-symbols-outlined">filter_alt</span>
+            <div 
+                v-if="filtering"
+                class="filt-pop-up"
+            >
+                <h3 class="filtTitle">Filter</h3>
+                <div class="filtInfo">
+                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
+                    <p class="filt-info-text">Project Manager</p>
+                </div>
+                <div class="filtInfo">
+                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
+                    <p class="filt-info-text">Business Analyst</p>
+                </div>
+                <div class="filtInfo">
+                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
+                    <p class="filt-info-text">Frontend Development</p>
+                </div>
+                <div class="filtInfo">
+                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
+                    <p class="filt-info-text">Backend Development</p>
+                </div>
+            </div>
         </div>
 
         <!-- Add personnel field pup-up -->
@@ -101,7 +127,7 @@ const catMode = ref(1)
     background: #000000;
     border-radius: 10px;
     width: 165px;
-    height: 210px;
+    height: 110px;
     opacity: 0.6;
     z-index: 1;
 
@@ -144,6 +170,45 @@ const catMode = ref(1)
     right: 35px;
     font-size: 35px;
 }
+.filt-pop-up {
+    position: absolute;
+    top: 100px;
+    right: 64px;
+    background: #000000;
+    border-radius: 10px;
+    width: 165px;
+    height: 210px;
+    opacity: 0.6;
+    z-index: 1;
+
+}
+.filtTitle {
+    position: relative;
+    top: 8px;
+    color: #ffffff;
+    padding: 10px 10px 20px 10px;
+    text-align: center;
+}
+.filtInfo {
+    position: relative;
+    color: #ffffff;
+    padding: 10px 5px;
+    display: flex;
+    justify-content: start;
+}
+.filt-info-text {
+    position: relative;
+    top: 7px;
+}
+.filt-info-btn {
+    background: rgba(81, 81, 81, 0.4);
+    border: 1px solid #000000;
+    width: 16px;
+    height: 16px;
+    color: #ffffff;
+    z-index: 2;
+}
+
 .addIcon {
     background: #E0E0E0;
     border-radius: 4px;
