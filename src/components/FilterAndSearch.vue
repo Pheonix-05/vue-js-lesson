@@ -5,6 +5,7 @@ const searchPerson = ref("")
 
 <template>
     <div class="bg">
+        <!-- Search field and icon -->
         <div>
             <input 
                 v-model.trim="searchPerson" 
@@ -15,9 +16,21 @@ const searchPerson = ref("")
             <span class="icon searchIcon material-symbols-outlined">search</span>
         </div>
         
-        <span class="icon sortIcon material-symbols-outlined">sort</span>
-        <span class="icon filterIcon material-symbols-outlined">filter_alt</span>
-        <span class="icon addIcon material-symbols-outlined">person_add</span>
+        <!-- Sorting pop-up menu -->
+        <div>
+            <span class="icon sortIcon material-symbols-outlined">sort</span>
+        </div>
+
+        <!-- filter pop-up menu -->
+        <div>
+            <span class="icon filterIcon material-symbols-outlined">filter_alt</span>
+        </div>
+
+        <!-- Add personnel field pup-up -->
+        <div>
+            <span class="icon addIcon material-symbols-outlined">person_add</span>
+        </div>
+
     </div>
 </template>
 

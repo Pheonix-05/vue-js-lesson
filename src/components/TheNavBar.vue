@@ -9,7 +9,7 @@ defineProps({
 
 <template>
     <div class="nav-bar">
-        <img >
+
         <h2 class="nav-tab">Employee List</h2>
     </div>
     
