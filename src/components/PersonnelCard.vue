@@ -43,13 +43,13 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
         >
             <div class="card">
                 <div class="info">{{card.fullName}}</div>
-                <span class="divider"></span>
+                <span class="divider divider2"></span>
                 <div class="info">{{card.department}}</div>
-                <span class="divider"></span>
+                <span class="divider divider2"></span>
                 <div class="info">{{card.companyEmail}}</div>
-                <span class="divider"></span>
+                <span class="divider divider2"></span>
                 <div class="info">{{card.personalEmail}}</div>
-                <span class="divider"></span>
+                <span class="divider divider2"></span>
                 <div class="info">{{card.recruitmentDate}}</div>
             </div>
         </li>
@@ -72,10 +72,14 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
     align-items: center;
 }
 .title {
+    text-align: center;
     line-height: 12px;
-    padding: 10px 115px;
-    border: 1px solid blueviolet;
+    padding: 1px;
+   
+    width: 330px;
+    max-width: 330px;
 
+    color: #909090;
 }
 .divider {
     position: relative;
@@ -84,6 +88,9 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
     border-radius: 20px;
     width: 2px;
     height: 25px;
+}
+.divider2 {
+    height: 30px;
 }
 
 .person-card {
@@ -101,9 +108,13 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
     margin: 2px;
 }
 .info {
+    display: inline-block;
+    text-align: center;
     line-height: 12px;
-    padding: 10px 90px;
-    border: 1px solid blueviolet;
+    padding: 10px;
+    
+    width: 330px;
+    max-width: 330px;
 }
 
 .n-a {
