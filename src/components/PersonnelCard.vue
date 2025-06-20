@@ -23,6 +23,8 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
 </script>
 
 <template>
+
+    <!-- Category Names -->
     <div class="category">
         <div class="title">Full Name</div>
         <span class="divider"></span>
@@ -35,6 +37,7 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
         <div class="title">Recruitment Date</div>
     </div>
 
+    <!-- Personnel Card Information -->
     <ul>
         <li
         v-for="(card, index) in personnel"
