@@ -5,6 +5,18 @@ const searchPerson = ref("")
 const sorting = ref(false)
 const filtering = ref(false)
 const catMode = ref(1)
+const addingPerson = ref(false)
+const departments = ref([
+    'Project Manager',
+    'Business Analyst',
+    'Frontend Development',
+    'Backend Development'
+])
+const selName = ref("")
+const selDepartment = ref("")
+const selComEmail = ref("")
+const selPersEmail = ref("")
+const selRecDate = ref()
 </script>
 
 <template>
@@ -59,28 +71,86 @@ const catMode = ref(1)
                 class="filt-pop-up"
             >
                 <h3 class="filtTitle">Filter</h3>
-                <div class="filtInfo">
+                <div v-for="department in departments" class="filtInfo">
                     <input class="filt-info-box" v-model="catMode.value" type="checkbox">
-                    <p class="filt-info-text">Project Manager</p>
-                </div>
-                <div class="filtInfo">
-                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
-                    <p class="filt-info-text">Business Analyst</p>
-                </div>
-                <div class="filtInfo">
-                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
-                    <p class="filt-info-text">Frontend Development</p>
-                </div>
-                <div class="filtInfo">
-                    <input class="filt-info-box" v-model="catMode.value" type="checkbox">
-                    <p class="filt-info-text">Backend Development</p>
+                    <p class="filt-info-text">{{ department.valueOf() }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Add personnel field pup-up -->
         <div>
-            <span class="icon addIcon material-symbols-outlined">person_add</span>
+            <span 
+                @click="addingPerson = true" 
+                class="icon addIcon material-symbols-outlined"
+            >person_add</span>
+            <div 
+                v-if="addingPerson"
+                class="addNewPerson"
+            >
+                <form class="addForm">
+                    <h2 class="formTitle">Add a Personnel</h2>
+                    <button class="cancelAdd" @click="addingPerson = false">
+                    Cancel
+                    </button>
+
+                    <div class="basicInfo">
+                        <label>
+                            <input 
+                                type="text" 
+                                class="addName" 
+                                placeholder="e.g. George W. Bush..."
+                                v-model="selName"
+                            >
+                            Full Name
+                        </label>
+                        <label>
+                            <input 
+                                type="email" 
+                                class="addComEmail" 
+                                placeholder="e.g. georgewbush@fastboy.net..."
+                                v-model="selComEmail"
+                            >
+                            Company Email
+                        </label>
+                        <label>
+                            <input 
+                                type="date" 
+                                class="addRecDate" 
+                                v-model="selRecDate"
+                            >
+                            Recruitment Date
+                        </label>
+                        <label>
+                            <input 
+                                type="email" 
+                                class="addPersEmail" 
+                                placeholder="e.g. georgewbush@gmail.com..."
+                                v-model="selPersEmail"
+                            >
+                            Personal Email
+                        </label>
+                    </div>
+
+                    <div class="addDepartment">
+                        <p>Department</p>
+                        <label 
+                            class="addDepartOption"
+                            v-for="department in departments"
+                        >
+                            <input 
+                                type="radio" 
+                                v-model="selDepartment"
+                                :value="department.valueOf()"
+                            > {{ department.valueOf() }}
+                        </label>
+                    </div>
+                    
+                    <button class="submitAdd">
+                    Submit
+                    </button>
+                </form>
+            </div>
         </div>
 
     </div>
@@ -174,11 +244,11 @@ const catMode = ref(1)
     position: absolute;
     top: 100px;
     right: 64px;
-    background: #000000;
+    background: #404040;
     border-radius: 10px;
-    width: 165px;
+    width: 205px;
     height: 210px;
-    opacity: 0.6;
+    opacity: 0.8;
     z-index: 1;
 
 }
@@ -217,5 +287,96 @@ const catMode = ref(1)
     right: 5px;
     padding: 2px;
     font-size: 25px;
+}
+.addNewPerson{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.addForm {
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background: #ffffff;
+    border: 3px solid #F1F1F1;
+    border-radius: 10px;
+    width: 50%;
+    height: 50%;
+    z-index: 2;
+}
+.formTitle {
+    position: relative;
+    top: 10px;
+    line-height: 20px;
+    color: #000000;
+    text-align: center;
+}
+.cancelAdd {
+    position: relative;
+    left: 89%;
+    top: -10px;
+    background: #F1F1F1;
+    border-radius: 5px;
+    color: #000000;
+    width: 80px;
+    height: 30px;
+}
+.basicInfo {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 20px 10%;
+    padding: 5px;
+    margin: 60px 0 10px 0;
+}
+.basicInfo > label {
+    display: block;
+    font-weight: bold;
+}
+.addName {
+    width: 200px;
+}
+.addComEmail {
+    width: 200px;
+}
+.addPersEmail {
+    width: 200px;
+}
+.addRecDate {
+    line-height: 17px;
+    width: 200px;
+}
+.addDepartment {
+    display: grid;
+    justify-content: center;
+    width: 250px;
+    padding: 12px;
+    margin: auto auto 20px auto;
+}
+.addDepartment > p {
+    line-height: 12px;
+    text-align: center;
+    padding: 20px 10px;
+    font-weight: bold;
+}
+.addDepartOption {
+    display: block;
+    padding: 10px;
+}
+.submitAdd {
+    background: #F1F1F1;
+    position: relative;
+    left: -2px;
+    border: 3px solid #F1F1F1;
+    border-radius: 10px;
+    line-height: 12px;
+    width: 100.5%;
+    height: 40px;
+    margin: 30px 0 0 0;
 }
 </style>
