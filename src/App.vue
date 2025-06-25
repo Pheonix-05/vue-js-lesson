@@ -6,16 +6,30 @@ import FilterAndSearch from './components/FilterAndSearch.vue';
 import PersonnelCard from './components/PersonnelCard.vue'
 
 const editingEnabled = ref(true)
+const departments = ref([
+    'Project Manager',
+    'Business Analyst',
+    'Frontend Development',
+    'Backend Development'
+])
 
 </script>
 
 <template>
   <div>
   <TheNavBar />
-  <FilterAndSearch :editingPersonnel="editingEnabled" @toggle="editingEnabled = !editingEnabled" />
+  <FilterAndSearch 
+  :editingPersonnel="editingEnabled" 
+  :departments="departments"
+  @toggle="editingEnabled = !editingEnabled" 
+  @editOff="editingEnabled = false"
+  />
   </div>
   <div>
-  <PersonnelCard :editingPersonnel="editingEnabled" />
+  <PersonnelCard 
+  :editingPersonnel="editingEnabled"
+  :departments="departments" 
+  />
   </div>
 
   <!-- <div class="header">

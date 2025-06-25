@@ -1,20 +1,14 @@
 <script setup>
 import { ref } from 'vue'
 
-defineProps(['editingPersonnel'])
-defineEmits(['toggle'])
+defineProps(['editingPersonnel', 'departments'])
+defineEmits(['toggle', 'editOff'])
 
 const searchPerson = ref('')
 const sorting = ref(false)
 const filtering = ref(false)
 const catMode = ref(1)
 const addingPerson = ref(false)
-const departments = ref([
-    'Project Manager',
-    'Business Analyst',
-    'Frontend Development',
-    'Backend Development'
-])
 const selName = ref("")
 const selDepartment = ref("")
 const selComEmail = ref("")
@@ -87,7 +81,7 @@ const selRecDate = ref()
         <!-- Add personnel field pup-up -->
         <div>
             <span 
-                @click="addingPerson = true" 
+                @click="addingPerson = true, $emit('editOff')" 
                 class="icon addIcon material-symbols-outlined"
             >person_add</span>
             <div 

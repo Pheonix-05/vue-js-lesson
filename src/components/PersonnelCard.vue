@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-defineProps(['editingPersonnel'])
+defineProps(['editingPersonnel', 'departments'])
 
 // information array
 const personnel = ref([
@@ -29,12 +29,14 @@ const personnel = ref([
 ])
 const reversedPersonnel = computed(()=>[personnel.value].reverse())
 
-// deleting
+// deleting function
 const confirming = ref(false)
+const deleteCurrName = ref('')
 const deleteTempVal = ref('')
 
-const areYouSure = (id)=>{
+const areYouSure = (card, id)=>{
     confirming.value = true
+    deleteCurrName.value = card.fullName
     deleteTempVal.value = id
 }
 const denyedDelete = ()=>{
@@ -47,7 +49,27 @@ const confirmedDelete = ()=>{
     deleteTempVal.value = ''
 }
 
+// editing function
+const editingCard = ref(false)
+const editCurrName = ref('')
+const editCurrComEmail = ref('')
+const editCurrPersEmail = ref('')
+const editCurrRecDate = ref('')
+const editTempVal = ref('')
 
+const editCard = (card, id)=>{
+    editingCard.value = true
+    editCurrName.value = card.fullName
+    editTempVal.value = id
+}
+const cancelEdit = ()=>{
+    editingCard.value = false
+    editTempVal.value = ''
+}
+const submitEdit = ()=>{
+    editingCard.value = false
+
+}
 </script>
 
 <template>
@@ -69,7 +91,7 @@ const confirmedDelete = ()=>{
     <ul>
         <li
         v-for="(card, index) in personnel"
-        :key="card.id"
+        :key="card.fullName"
         class="person-card"
         >
             <div class="card">
@@ -84,11 +106,12 @@ const confirmedDelete = ()=>{
                 <div class="info">{{card.recruitmentDate}}</div>
             </div>
             <span 
+                @click="editCard(card, index)"
                 class="editIcon material-symbols-outlined"
                 v-if="editingPersonnel"
             >edit</span>
             <span 
-                @click="areYouSure(index)"
+                @click="areYouSure(card, index)"
                 class="deleteIcon material-symbols-outlined"
                 v-if="editingPersonnel"
             >delete_forever</span>
@@ -102,13 +125,78 @@ const confirmedDelete = ()=>{
         Nothing to see here
     </p>
 
+    <!-- editing pup-up -->
     <div 
-        class="are-you-sure"
+        v-if="editingCard"
+        class="editPersonnelCard"
+    >
+        <form class="editForm">
+            <h2 class="formTitle">Edit {{editCurrName}}'s Profile</h2>
+            <button class="cancelEdit" @click="cancelEdit">
+            Cancel
+            </button>
+
+            <div class="basicInfo">
+                <label>
+                    <input 
+                        type="text" 
+                        class="editName" 
+                        placeholder="e.g. George W. Bush..."
+                    >
+                    Full Name
+                </label>
+                <label>
+                    <input 
+                        type="email" 
+                        class="editComEmail" 
+                        placeholder="e.g. georgewbush@fastboy.net..."
+                    >
+                    Company Email
+                </label>
+                <label>
+                    <input 
+                        type="date" 
+                        class="editRecDate" 
+                    >
+                    Recruitment Date
+                </label>
+                <label>
+                    <input 
+                        type="email" 
+                        class="editPersEmail" 
+                        placeholder="e.g. georgewbush@gmail.com..."
+                    >
+                    Personal Email
+                </label>
+            </div>
+
+            <div class="editDepartment">
+                <p>Department</p>
+                <label 
+                    class="editDepartOption"
+                    v-for="department in departments"
+                >
+                    <input 
+                        type="radio" 
+                        :value="department.valueOf()"
+                    > {{ department.valueOf() }}
+                </label>
+            </div>
+            
+            <button class="submitEdit">
+            Submit
+            </button>
+        </form>
+    </div>
+
+    <!-- deleting pop-up -->
+    <div 
+        class="are-you-sure" 
         v-if="confirming"
     >
         <div class="confirmation-field">
             <h3>This Action Cannot Be Undone</h3>
-            <p>By clicking "Yes, Delete" you understand that the profile will be deleted forever.</p>
+            <p>By clicking "Yes, Delete" you understand that {{deleteCurrName}}'s profile will be deleted forever.</p>
             <div class="confirmation-btn">
                 <button class="cancelDelete" @click="denyedDelete">
                     Cancel
@@ -194,6 +282,99 @@ const confirmedDelete = ()=>{
     font-size: 25px;
     z-index: 1;
 }
+
+.editPersonnelCard{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.editForm {
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    background: #ffffff;
+    border: 3px solid #F1F1F1;
+    border-radius: 10px;
+    width: 50%;
+    height: 50%;
+    z-index: 3;
+}
+.formTitle {
+    position: relative;
+    top: 10px;
+    line-height: 20px;
+    color: #000000;
+    text-align: center;
+}
+.cancelEdit {
+    position: relative;
+    left: 89%;
+    top: -10px;
+    background: #F1F1F1;
+    border-radius: 5px;
+    color: #000000;
+    width: 80px;
+    height: 30px;
+}
+.basicInfo {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 20px 10%;
+    padding: 5px;
+    margin: 60px 0 10px 0;
+}
+.basicInfo > label {
+    display: block;
+    font-weight: bold;
+}
+.editName {
+    width: 200px;
+}
+.editComEmail {
+    width: 200px;
+}
+.editPersEmail {
+    width: 200px;
+}
+.editRecDate {
+    line-height: 17px;
+    width: 200px;
+}
+.editDepartment {
+    display: grid;
+    justify-content: center;
+    width: 250px;
+    padding: 12px;
+    margin: auto auto 20px auto;
+}
+.editDepartment > p {
+    line-height: 12px;
+    text-align: center;
+    padding: 20px 10px;
+    font-weight: bold;
+}
+.editDepartOption {
+    display: block;
+    padding: 10px;
+}
+.submitEdit {
+    background: #F1F1F1;
+    position: relative;
+    left: -2px;
+    border: 3px solid #F1F1F1;
+    border-radius: 10px;
+    line-height: 12px;
+    width: 100.5%;
+    height: 40px;
+    margin: 30px 0 0 0;
+}
+
 .deleteIcon {
     position: absolute;
     top: 21%;
