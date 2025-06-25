@@ -5,7 +5,7 @@ import TheNavBar from './components/TheNavBar.vue'
 import FilterAndSearch from './components/FilterAndSearch.vue';
 import PersonnelCard from './components/PersonnelCard.vue'
 
-const editingEnabled = ref(false)
+const editingEnabled = ref(true)
 
 </script>
 
