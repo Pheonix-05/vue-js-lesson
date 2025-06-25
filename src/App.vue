@@ -1,18 +1,21 @@
 <script setup>
 
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import TheNavBar from './components/TheNavBar.vue'
 import FilterAndSearch from './components/FilterAndSearch.vue';
 import PersonnelCard from './components/PersonnelCard.vue'
+
+const editingEnabled = ref(false)
+
 </script>
 
 <template>
   <div>
   <TheNavBar />
-  <FilterAndSearch />
+  <FilterAndSearch :editingPersonnel="editingEnabled" @toggle="editingEnabled = !editingEnabled" />
   </div>
   <div>
-  <PersonnelCard />
+  <PersonnelCard :editingPersonnel="editingEnabled" />
   </div>
 
   <!-- <div class="header">

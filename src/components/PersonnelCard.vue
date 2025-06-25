@@ -1,6 +1,7 @@
 <script setup>
-
 import { ref, computed } from 'vue'
+
+defineProps(['editingPersonnel'])
 
 const personnel = ref([
     {
@@ -66,11 +67,11 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
             </div>
             <span 
                 class="editIcon material-symbols-outlined"
-                
+                v-if="editingPersonnel"
             >edit</span>
             <span 
                 class="deleteIcon material-symbols-outlined"
-                
+                v-if="editingPersonnel"
             >delete_forever</span>
         </li>
     </ul>

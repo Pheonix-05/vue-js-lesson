@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 
+defineProps(['editingPersonnel'])
+defineEmits(['toggle'])
+
 const searchPerson = ref('')
 const sorting = ref(false)
 const filtering = ref(false)
@@ -17,8 +20,6 @@ const selDepartment = ref("")
 const selComEmail = ref("")
 const selPersEmail = ref("")
 const selRecDate = ref()
-const editingPersonnel = ref(false)
-
 
 </script>
 
@@ -160,7 +161,7 @@ const editingPersonnel = ref(false)
 
         <!-- editing function -->
         <span 
-            @click="editingPersonnel = !editingPersonnel"
+            @click="$emit('toggle')"
             class="icon editIcon material-symbols-outlined"
             :class="{
                 editing: editingPersonnel
