@@ -1,4 +1,5 @@
 <script setup>
+
 import { ref, computed } from 'vue'
 
 const personnel = ref([
@@ -17,6 +18,14 @@ const personnel = ref([
         companyEmail: "henrysmith@fastboy.net",
         personalEmail: "henrysmith@gmail.com",
         recruitmentDate: "01/13/2003"
+    },
+    {
+        id: 3,
+        fullName: "Joseph Donner",
+        department: "Project Manager",
+        companyEmail: "josephdonner@fastboy.net",
+        personalEmail: "josephdonner@gmail.com",
+        recruitmentDate: "11/23/2000"
     }
 ])
 const reversedPersonnel = computed(()=>[personnel.value].reverse())
@@ -55,6 +64,14 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
                 <span class="divider divider2"></span>
                 <div class="info">{{card.recruitmentDate}}</div>
             </div>
+            <span 
+                class="editIcon material-symbols-outlined"
+                
+            >edit</span>
+            <span 
+                class="deleteIcon material-symbols-outlined"
+                
+            >delete_forever</span>
         </li>
     </ul>
 
@@ -111,7 +128,6 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
     margin: 2px;
 }
 .info {
-    display: inline-block;
     text-align: center;
     line-height: 12px;
     padding: 10px;
@@ -126,5 +142,29 @@ const reversedPersonnel = computed(()=>[personnel.value].reverse())
     padding: 20px;
     text-align: center;
     color: #B0B0B0;
+}
+
+.editIcon {
+    position: absolute;
+    top: 21%;
+    right: 60px;
+    background: #E0E0E0;
+    border-radius: 4px;
+    border: 1px solid #474747;
+    padding: 2px;
+    font-size: 25px;
+    z-index: 1;
+}
+.deleteIcon {
+    position: absolute;
+    top: 21%;
+    right: 20px;
+    background: #E63939;
+    color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #474747;
+    padding: 2px;
+    font-size: 25px;
+    z-index: 1;
 }
 </style>

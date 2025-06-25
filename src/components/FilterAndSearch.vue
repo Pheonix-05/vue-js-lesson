@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const searchPerson = ref("")
+const searchPerson = ref('')
 const sorting = ref(false)
 const filtering = ref(false)
 const catMode = ref(1)
@@ -17,6 +17,9 @@ const selDepartment = ref("")
 const selComEmail = ref("")
 const selPersEmail = ref("")
 const selRecDate = ref()
+const editingPersonnel = ref(false)
+
+
 </script>
 
 <template>
@@ -29,9 +32,11 @@ const selRecDate = ref()
                 placeholder="       Search a Name or Email..."
                 class="search"
             >
-            <span class="icon searchIcon material-symbols-outlined">search</span>
+            <span 
+                class="icon searchIcon material-symbols-outlined"
+                v-if="!searchPerson"
+            >search</span>
         </div>
-        
         <!-- Sorting pop-up menu -->
         <div 
             @mouseenter="sorting = true" 
@@ -153,6 +158,14 @@ const selRecDate = ref()
             </div>
         </div>
 
+        <!-- editing function -->
+        <span 
+            @click="editingPersonnel = !editingPersonnel"
+            class="icon editIcon material-symbols-outlined"
+            :class="{
+                editing: editingPersonnel
+            }"
+        >edit</span>
     </div>
 </template>
 
@@ -187,13 +200,13 @@ const selRecDate = ref()
 
 .sortIcon {
     top: 92px;
-    right: 70px;
+    right: 105px;
     font-size: 36px;
 }
 .sort-pop-up {
     position: absolute;
     top: 100px;
-    right: 102px;
+    right: 137px;
     background: #000000;
     border-radius: 10px;
     width: 165px;
@@ -237,13 +250,13 @@ const selRecDate = ref()
 
 .filterIcon{
     top: 94px;
-    right: 35px;
+    right: 70px;
     font-size: 35px;
 }
 .filt-pop-up {
     position: absolute;
     top: 100px;
-    right: 64px;
+    right: 98px;
     background: #404040;
     border-radius: 10px;
     width: 205px;
@@ -284,7 +297,7 @@ const selRecDate = ref()
     border-radius: 4px;
     border: 1px solid #474747;
     top: 96px;
-    right: 5px;
+    right: 40px;
     padding: 2px;
     font-size: 25px;
 }
@@ -295,7 +308,7 @@ const selRecDate = ref()
     background: rgba(0, 0, 0, 0.4);
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
 }
 .addForm {
     display: block;
@@ -307,7 +320,7 @@ const selRecDate = ref()
     border-radius: 10px;
     width: 50%;
     height: 50%;
-    z-index: 2;
+    z-index: 3;
 }
 .formTitle {
     position: relative;
@@ -378,5 +391,29 @@ const selRecDate = ref()
     width: 100.5%;
     height: 40px;
     margin: 30px 0 0 0;
+}
+
+.editIcon {
+    background: #E0E0E0;
+    border-radius: 4px;
+    border: 1px solid #474747;
+    top: 96px;
+    right: 5px;
+    padding: 2px;
+    font-size: 25px;
+}
+.editing {
+    background: #999999;
+}
+
+*,
+*::before,
+*::after {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 </style>
