@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { useGlobalStore } from '@/stores/global'
 
 defineProps(['editingPersonnel', 'departments'])
 defineEmits(['toggle', 'editOff'])
@@ -13,8 +14,30 @@ const selName = ref("")
 const selDepartment = ref("")
 const selComEmail = ref("")
 const selPersEmail = ref("")
-const selRecDate = ref()
+const selRecDate = ref('')
 
+const recDateTempArr = ref([])
+const recDateTempArrStoredVal = ref('')
+
+const recDateDecode = (date)=>{
+    recDateTempArr.value = date.split("-")
+    recDateTempArrStoredVal.value = recDateTempArr.value[0]
+    recDateTempArr.value.shift()
+    recDateTempArr.value.push(recDateTempArrStoredVal.value)
+    recDateTempArrStoredVal.value = ''
+    return recDateTempArr.value.join('/')
+}
+
+const store = useGlobalStore()
+
+const submitForm = ()=>{
+    store.addPersonnel(selName.value, selDepartment.value, selComEmail.value, selPersEmail.value, recDateDecode(selRecDate.value))
+    selName.value = ""
+    selDepartment.value = ""
+    selComEmail.value = ""
+    selPersEmail.value = ""
+    selRecDate.value = ''
+}
 </script>
 
 <template>
@@ -88,7 +111,10 @@ const selRecDate = ref()
                 v-if="addingPerson"
                 class="addNewPerson"
             >
-                <form class="addForm">
+                <form 
+                class="addForm"
+                @submit.prevent="submitForm"
+                >
                     <h2 class="formTitle">Add a Personnel</h2>
                     <button class="cancelAdd" @click="addingPerson = false">
                     Cancel
@@ -101,6 +127,7 @@ const selRecDate = ref()
                                 class="addName" 
                                 placeholder="e.g. George W. Bush..."
                                 v-model="selName"
+                                required="true"
                             >
                             Full Name
                         </label>
@@ -110,6 +137,7 @@ const selRecDate = ref()
                                 class="addComEmail" 
                                 placeholder="e.g. georgewbush@fastboy.net..."
                                 v-model="selComEmail"
+                                required="true"
                             >
                             Company Email
                         </label>
@@ -118,6 +146,7 @@ const selRecDate = ref()
                                 type="date" 
                                 class="addRecDate" 
                                 v-model="selRecDate"
+                                required="true"
                             >
                             Recruitment Date
                         </label>
@@ -127,6 +156,7 @@ const selRecDate = ref()
                                 class="addPersEmail" 
                                 placeholder="e.g. georgewbush@gmail.com..."
                                 v-model="selPersEmail"
+                                required="true"
                             >
                             Personal Email
                         </label>
@@ -145,8 +175,9 @@ const selRecDate = ref()
                             > {{ department.valueOf() }}
                         </label>
                     </div>
-                    
-                    <button class="submitAdd">
+                    <button 
+                    class="submitAdd"
+                    >
                     Submit
                     </button>
                 </form>

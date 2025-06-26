@@ -1,52 +1,57 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useGlobalStore } from '@/stores/global';
 
 defineProps(['editingPersonnel', 'departments'])
 
+const store = useGlobalStore()
+
+const personnel = store.getPersonnel()
+
 // information array
-const personnel = ref([
-    {
-        fullName: "John Doe",
-        department: "Frontend Development",
-        companyEmail: "johndoe@fastboy.net",
-        personalEmail: "johndoe@gmail.com",
-        recruitmentDate: "12/03/2023"
-    },
-    {
-        fullName: "Henry Smith",
-        department: "Backend Development",
-        companyEmail: "henrysmith@fastboy.net",
-        personalEmail: "henrysmith@gmail.com",
-        recruitmentDate: "01/13/2003"
-    },
-    {
-        fullName: "Joseph Donner",
-        department: "Project Manager",
-        companyEmail: "josephdonner@fastboy.net",
-        personalEmail: "josephdonner@gmail.com",
-        recruitmentDate: "11/23/2000"
-    }
-])
+// const personnel = ref([
+//     {
+//         fullName: "John Doe",
+//         department: "Frontend Development",
+//         companyEmail: "johndoe@fastboy.net",
+//         personalEmail: "johndoe@gmail.com",
+//         recruitmentDate: "12/03/2023"
+//     },
+//     {
+//         fullName: "Henry Smith",
+//         department: "Backend Development",
+//         companyEmail: "henrysmith@fastboy.net",
+//         personalEmail: "henrysmith@gmail.com",
+//         recruitmentDate: "01/13/2003"
+//     },
+//     {
+//         fullName: "Joseph Donner",
+//         department: "Project Manager",
+//         companyEmail: "josephdonner@fastboy.net",
+//         personalEmail: "josephdonner@gmail.com",
+//         recruitmentDate: "11/23/2000"
+//     }
+// ])
 const reversedPersonnel = computed(()=>[personnel.value].reverse())
 
 // deleting function
 const confirming = ref(false)
 const deleteCurrName = ref('')
-const deleteTempVal = ref('')
+const deleteTempIndex = ref('')
 
 const areYouSure = (card, id)=>{
     confirming.value = true
     deleteCurrName.value = card.fullName
-    deleteTempVal.value = id
+    deleteTempIndex.value = id
 }
 const denyedDelete = ()=>{
     confirming.value = false
-    deleteTempVal.value = ''
+    deleteTempIndex.value = ''
 }
 const confirmedDelete = ()=>{
     confirming.value = false
-    personnel.value.splice(deleteTempVal.value, 1)
-    deleteTempVal.value = ''
+    store.deletePersonnel(deleteTempIndex.value)
+    deleteTempIndex.value = ''
 }
 
 // editing function
@@ -57,9 +62,25 @@ const editCurrPersEmail = ref('')
 const editCurrRecDate = ref('')
 const editTempVal = ref('')
 
+const recDateTempArr = ref([])
+const recDateTempArrStoredVal = ref('')
+
+const recDateEncode = (date)=>{
+    recDateTempArr.value = date.split("/")
+    recDateTempArrStoredVal.value = recDateTempArr.value[2]
+    recDateTempArr.value.pop()
+    recDateTempArr.value.unshift(recDateTempArrStoredVal.value)
+    recDateTempArrStoredVal.value = ''
+    return recDateTempArr.value.join('-')
+}
+
+
 const editCard = (card, id)=>{
     editingCard.value = true
     editCurrName.value = card.fullName
+    editCurrComEmail.value = card.companyEmail
+    editCurrPersEmail.value = card.personalEmail
+    editCurrRecDate.value = recDateEncode(card.recruitmentDate)
     editTempVal.value = id
 }
 const cancelEdit = ()=>{
@@ -70,6 +91,8 @@ const submitEdit = ()=>{
     editingCard.value = false
 
 }
+
+
 </script>
 
 <template>
@@ -107,12 +130,12 @@ const submitEdit = ()=>{
             </div>
             <span 
                 @click="editCard(card, index)"
-                class="editIcon material-symbols-outlined"
+                class="editIcon material-symbols-outlined unselectable"
                 v-if="editingPersonnel"
             >edit</span>
             <span 
                 @click="areYouSure(card, index)"
-                class="deleteIcon material-symbols-outlined"
+                class="deleteIcon material-symbols-outlined unselectable"
                 v-if="editingPersonnel"
             >delete_forever</span>
         </li>
@@ -132,7 +155,7 @@ const submitEdit = ()=>{
     >
         <form class="editForm">
             <h2 class="formTitle">Edit {{editCurrName}}'s Profile</h2>
-            <button class="cancelEdit" @click="cancelEdit">
+            <button class="cancelEdit unselectable" @click="cancelEdit">
             Cancel
             </button>
 
@@ -142,6 +165,7 @@ const submitEdit = ()=>{
                         type="text" 
                         class="editName" 
                         placeholder="e.g. George W. Bush..."
+                        v-model="editCurrName"
                     >
                     Full Name
                 </label>
@@ -150,6 +174,7 @@ const submitEdit = ()=>{
                         type="email" 
                         class="editComEmail" 
                         placeholder="e.g. georgewbush@fastboy.net..."
+                        v-model="editCurrComEmail"
                     >
                     Company Email
                 </label>
@@ -157,6 +182,7 @@ const submitEdit = ()=>{
                     <input 
                         type="date" 
                         class="editRecDate" 
+                        v-model="editCurrRecDate"
                     >
                     Recruitment Date
                 </label>
@@ -165,6 +191,7 @@ const submitEdit = ()=>{
                         type="email" 
                         class="editPersEmail" 
                         placeholder="e.g. georgewbush@gmail.com..."
+                        v-model="editCurrPersEmail"
                     >
                     Personal Email
                 </label>
@@ -183,7 +210,7 @@ const submitEdit = ()=>{
                 </label>
             </div>
             
-            <button class="submitEdit">
+            <button class="submitEdit unselectable">
             Submit
             </button>
         </form>
@@ -208,6 +235,7 @@ const submitEdit = ()=>{
             
         </div>
     </div>
+    <h1 class="temp">{{ store.getPack }}</h1>
 </template>
 
 <style scoped>
@@ -440,5 +468,21 @@ const submitEdit = ()=>{
     font-size: 115%;
     font-weight: bold;
     line-height: 270%;
+}
+
+.temp {
+    position: absolute;
+    top: 400px;
+    font-size: 25px;
+    line-height: 25px;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 </style>
