@@ -8,30 +8,6 @@ const store = useGlobalStore()
 
 const personnel = store.getPersonnel()
 
-// information array
-// const personnel = ref([
-//     {
-//         fullName: "John Doe",
-//         department: "Frontend Development",
-//         companyEmail: "johndoe@fastboy.net",
-//         personalEmail: "johndoe@gmail.com",
-//         recruitmentDate: "12/03/2023"
-//     },
-//     {
-//         fullName: "Henry Smith",
-//         department: "Backend Development",
-//         companyEmail: "henrysmith@fastboy.net",
-//         personalEmail: "henrysmith@gmail.com",
-//         recruitmentDate: "01/13/2003"
-//     },
-//     {
-//         fullName: "Joseph Donner",
-//         department: "Project Manager",
-//         companyEmail: "josephdonner@fastboy.net",
-//         personalEmail: "josephdonner@gmail.com",
-//         recruitmentDate: "11/23/2000"
-//     }
-// ])
 const reversedPersonnel = computed(()=>[personnel.value].reverse())
 
 // deleting function
@@ -57,10 +33,11 @@ const confirmedDelete = ()=>{
 // editing function
 const editingCard = ref(false)
 const editCurrName = ref('')
+const editCurrDept = ref('')
 const editCurrComEmail = ref('')
 const editCurrPersEmail = ref('')
 const editCurrRecDate = ref('')
-const editTempVal = ref('')
+const editTempIndex = ref('')
 
 const recDateTempArr = ref([])
 const recDateTempArrStoredVal = ref('')
@@ -78,18 +55,24 @@ const recDateEncode = (date)=>{
 const editCard = (card, id)=>{
     editingCard.value = true
     editCurrName.value = card.fullName
+    editCurrDept.value = card.department
     editCurrComEmail.value = card.companyEmail
     editCurrPersEmail.value = card.personalEmail
     editCurrRecDate.value = recDateEncode(card.recruitmentDate)
-    editTempVal.value = id
+    editTempIndex.value = id
 }
 const cancelEdit = ()=>{
     editingCard.value = false
-    editTempVal.value = ''
+    editCurrName.value = ""
+    editCurrDept.value = ""
+    editCurrComEmail.value = ""
+    editCurrPersEmail.value = ""
+    editCurrRecDate.value = ""
+    editTempIndex.value = ''
 }
 const submitEdit = ()=>{
-    editingCard.value = false
-
+    store.editPersonnel(editTempIndex, editCurrName.value, editCurrDept.value, editCurrComEmail.value, editCurrPersEmail.value, editCurrRecDate.value)
+    cancelEdit()
 }
 
 
@@ -153,7 +136,10 @@ const submitEdit = ()=>{
         v-if="editingCard"
         class="editPersonnelCard"
     >
-        <form class="editForm">
+        <form 
+            class="editForm"
+            @submit.prevent="submitEdit"
+        >
             <h2 class="formTitle">Edit {{editCurrName}}'s Profile</h2>
             <button class="cancelEdit unselectable" @click="cancelEdit">
             Cancel
@@ -204,13 +190,14 @@ const submitEdit = ()=>{
                     v-for="department in departments"
                 >
                     <input 
-                        type="radio" 
+                        type="radio"
+                        v-model="editCurrDept"
                         :value="department.valueOf()"
                     > {{ department.valueOf() }}
                 </label>
             </div>
             
-            <button class="submitEdit unselectable">
+            <button class="submitEdit unselectable" >
             Submit
             </button>
         </form>
@@ -235,7 +222,6 @@ const submitEdit = ()=>{
             
         </div>
     </div>
-    <h1 class="temp">{{ store.getPack }}</h1>
 </template>
 
 <style scoped>
@@ -468,13 +454,6 @@ const submitEdit = ()=>{
     font-size: 115%;
     font-weight: bold;
     line-height: 270%;
-}
-
-.temp {
-    position: absolute;
-    top: 400px;
-    font-size: 25px;
-    line-height: 25px;
 }
 
 .unselectable {

@@ -30,8 +30,18 @@ const recDateDecode = (date)=>{
 
 const store = useGlobalStore()
 
+const cancelForm = ()=>{
+    addingPerson = false
+    selName.value = ""
+    selDepartment.value = ""
+    selComEmail.value = ""
+    selPersEmail.value = ""
+    selRecDate.value = ''
+}
+
 const submitForm = ()=>{
     store.addPersonnel(selName.value, selDepartment.value, selComEmail.value, selPersEmail.value, recDateDecode(selRecDate.value))
+    addingPerson = false
     selName.value = ""
     selDepartment.value = ""
     selComEmail.value = ""
@@ -113,10 +123,9 @@ const submitForm = ()=>{
             >
                 <form 
                 class="addForm"
-                @submit.prevent="submitForm"
                 >
                     <h2 class="formTitle">Add a Personnel</h2>
-                    <button class="cancelAdd" @click="addingPerson = false">
+                    <button class="cancelAdd" @click="cancelForm">
                     Cancel
                     </button>
 
@@ -127,7 +136,6 @@ const submitForm = ()=>{
                                 class="addName" 
                                 placeholder="e.g. George W. Bush..."
                                 v-model="selName"
-                                required="true"
                             >
                             Full Name
                         </label>
@@ -137,7 +145,6 @@ const submitForm = ()=>{
                                 class="addComEmail" 
                                 placeholder="e.g. georgewbush@fastboy.net..."
                                 v-model="selComEmail"
-                                required="true"
                             >
                             Company Email
                         </label>
@@ -146,7 +153,6 @@ const submitForm = ()=>{
                                 type="date" 
                                 class="addRecDate" 
                                 v-model="selRecDate"
-                                required="true"
                             >
                             Recruitment Date
                         </label>
@@ -156,7 +162,6 @@ const submitForm = ()=>{
                                 class="addPersEmail" 
                                 placeholder="e.g. georgewbush@gmail.com..."
                                 v-model="selPersEmail"
-                                required="true"
                             >
                             Personal Email
                         </label>
@@ -177,6 +182,8 @@ const submitForm = ()=>{
                     </div>
                     <button 
                     class="submitAdd"
+                    :disabled="!selName || !selComEmail || !selPersEmail || !selRecDate"
+                    @click="submitForm"
                     >
                     Submit
                     </button>
