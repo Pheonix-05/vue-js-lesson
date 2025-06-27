@@ -123,7 +123,7 @@ const submitEdit = ()=>{
             >delete_forever</span>
         </li>
     </ul>
-
+    <p class="temp">{{ personnel }}</p>
     <p 
     v-if="!personnel.length"
     class="n-a"
@@ -454,6 +454,10 @@ const submitEdit = ()=>{
     font-size: 115%;
     font-weight: bold;
     line-height: 270%;
+}
+
+.temp {
+    line-height: 20px;
 }
 
 .unselectable {
