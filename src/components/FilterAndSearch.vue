@@ -169,7 +169,7 @@ const submitForm = ()=>{
 
                     <div class="addDepartment">
                         <p>Department</p>
-                        <label 
+                        <!-- <label 
                             class="addDepartOption"
                             v-for="department in departments"
                         >
@@ -178,7 +178,13 @@ const submitForm = ()=>{
                                 v-model="selDepartment"
                                 :value="department.valueOf()"
                             > {{ department.valueOf() }}
-                        </label>
+                        </label> -->
+                        <select v-model="selDepartment">
+                            <option v-for="department in departments" :value="department.valueOf()">
+                                {{ department.valueOf() }}
+                            </option>
+
+                        </select>
                     </div>
                     <button 
                     class="submitAdd"
@@ -346,13 +352,13 @@ const submitForm = ()=>{
 .addForm {
     display: block;
     position: absolute;
-    top: 25%;
+    top: 30.6%;
     left: 25%;
     background: #ffffff;
     border: 3px solid #F1F1F1;
     border-radius: 10px;
     width: 50%;
-    height: 50%;
+    height: 38.8%;
     z-index: 3;
 }
 .formTitle {

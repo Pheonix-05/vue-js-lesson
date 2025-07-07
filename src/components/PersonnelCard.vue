@@ -207,7 +207,7 @@ const tempArr = ref([
 
             <div class="editDepartment">
                 <p>Department</p>
-                <label 
+                <!-- <label 
                     class="editDepartOption"
                     v-for="department in departments"
                 >
@@ -216,7 +216,12 @@ const tempArr = ref([
                         v-model="editCurrDept"
                         :value="department.valueOf()"
                     > {{ department.valueOf() }}
-                </label>
+                </label> -->
+                <select v-model="editCurrDept">
+                    <option v-for="department in departments" :value="department.valueOf()">
+                        {{ department.valueOf() }}
+                    </option>
+                </select>
             </div>
             
             <button 
@@ -334,13 +339,13 @@ const tempArr = ref([
 .editForm {
     display: block;
     position: absolute;
-    top: 25%;
+    top: 30.6%;
     left: 25%;
     background: #ffffff;
     border: 3px solid #F1F1F1;
     border-radius: 10px;
     width: 50%;
-    height: 50%;
+    height: 38.8%;
     z-index: 3;
 }
 .formTitle {
