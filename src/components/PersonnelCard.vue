@@ -32,12 +32,12 @@ const confirmedDelete = ()=>{
 
 // editing function
 const editingCard = ref(false)
-const editCurrName = ref('')
-const editCurrDept = ref('')
-const editCurrComEmail = ref('')
-const editCurrPersEmail = ref('')
-const editCurrRecDate = ref('')
-const editTempIndex = ref('')
+let editCurrName = ref("")
+let editCurrDept = ref("")
+let editCurrComEmail = ref("")
+let editCurrPersEmail = ref("")
+let editCurrRecDate = ref('')
+let editTempIndex = ref('')
 
 const recDateTempArr = ref([])
 const recDateTempArrStoredVal = ref('')
@@ -51,6 +51,14 @@ const recDateEncode = (date)=>{
     return recDateTempArr.value.join('-')
 }
 
+const recDateDecode = (date)=>{
+    recDateTempArr.value = date.split("-")
+    recDateTempArrStoredVal.value = recDateTempArr.value[0]
+    recDateTempArr.value.shift()
+    recDateTempArr.value.push(recDateTempArrStoredVal.value)
+    recDateTempArrStoredVal.value = ''
+    return recDateTempArr.value.join('/')
+}
 
 const editCard = (card, id)=>{
     editingCard.value = true
@@ -71,11 +79,25 @@ const cancelEdit = ()=>{
     editTempIndex.value = ''
 }
 const submitEdit = ()=>{
-    store.editPersonnel(editTempIndex, editCurrName.value, editCurrDept.value, editCurrComEmail.value, editCurrPersEmail.value, editCurrRecDate.value)
-    cancelEdit()
+    store.editPersonnel(editTempIndex.value, {
+        fullName: editCurrName.value,
+        department: editCurrDept.value,
+        companyEmail: editCurrComEmail.value,
+        personalEmail: editCurrPersEmail.value,
+        recruitmentDate: recDateDecode(editCurrRecDate.value)   
+    })
+    editingCard.value = false
+    editCurrName.value = ""
+    editCurrDept.value = ""
+    editCurrComEmail.value = ""
+    editCurrPersEmail.value = ""
+    editCurrRecDate.value = ""
+    editTempIndex.value = ''
 }
 
-
+const tempArr = ref([
+    editTempIndex, editCurrName.value, editCurrDept.value, editCurrComEmail.value, editCurrPersEmail.value, editCurrRecDate.value
+])
 </script>
 
 <template>
@@ -123,7 +145,7 @@ const submitEdit = ()=>{
             >delete_forever</span>
         </li>
     </ul>
-    <p class="temp">{{ personnel }}</p>
+    <!-- <p class="temp">{{ tempArr }}</p> -->
     <p 
     v-if="!personnel.length"
     class="n-a"
@@ -197,7 +219,10 @@ const submitEdit = ()=>{
                 </label>
             </div>
             
-            <button class="submitEdit unselectable" >
+            <button 
+            class="submitEdit unselectable" 
+            @click="submitEdit"
+            >
             Submit
             </button>
         </form>

@@ -9,7 +9,7 @@ const searchPerson = ref('')
 const sorting = ref(false)
 const filtering = ref(false)
 const catMode = ref(1)
-const addingPerson = ref(false)
+let addingPerson = ref(false)
 const selName = ref("")
 const selDepartment = ref("")
 const selComEmail = ref("")
@@ -31,7 +31,7 @@ const recDateDecode = (date)=>{
 const store = useGlobalStore()
 
 const cancelForm = ()=>{
-    addingPerson = false
+    addingPerson.value = false
     selName.value = ""
     selDepartment.value = ""
     selComEmail.value = ""
@@ -41,7 +41,7 @@ const cancelForm = ()=>{
 
 const submitForm = ()=>{
     store.addPersonnel(selName.value, selDepartment.value, selComEmail.value, selPersEmail.value, recDateDecode(selRecDate.value))
-    addingPerson = false
+    addingPerson.value = false
     selName.value = ""
     selDepartment.value = ""
     selComEmail.value = ""

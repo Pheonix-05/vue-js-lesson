@@ -24,13 +24,11 @@ export const useGlobalStore = defineStore('global', {
                     personalEmail: "josephdonner@gmail.com",
                     recruitmentDate: "11/23/2000"
                 }
-        ],
-        id: 0,
+        ]
     }),
     actions: {
         addPersonnel(name, dept, comE, perE, recD) {
             this.personnel.push({
-                id: this.id++,
                 fullName: name,
                 department: dept,
                 companyEmail: comE,
@@ -41,15 +39,8 @@ export const useGlobalStore = defineStore('global', {
         deletePersonnel(personnelId) {
             this.personnel.splice(personnelId, 1)
         },
-        editPersonnel(personnelId, nName, nDept, nComE, nPerE, nRecD) {
-            this.personnel[personnelId] = {
-                id: personnelId,
-                fullName: nName,
-                department: nDept,
-                companyEmail: nComE,
-                personalEmail: nPerE,
-                recruitmentDate: nRecD
-            }
+        editPersonnel(personnelId, card) {
+            this.personnel[personnelId] = card
         },
         getPersonnel() {
             return this.personnel
